@@ -64,11 +64,7 @@ function App() {
           />
           <Route
             path="/login"
-            element={
-              <PublicLayout>
-                <LoginPage />
-              </PublicLayout>
-            }
+            element={<LoginPage />}
           />
           <Route
             path="/register"
