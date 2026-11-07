@@ -25,13 +25,18 @@ export const getDashboardStats = asyncHandler(async (req, res, next) => {
 export const getRevenueReport = asyncHandler(async (req, res, next) => {
   const { startDate, endDate } = req.query;
 
-  if (!startDate || !endDate) {
-    throw new AppError('Please provide startDate and endDate', 400);
-  }
+  const now = new Date();
+  const defaultStart = new Date(now);
+  defaultStart.setDate(defaultStart.getDate() - 30);
+  const defaultEnd = new Date(now);
+  defaultEnd.setDate(defaultEnd.getDate() + 30);
+
+  const start = startDate ? new Date(startDate) : defaultStart;
+  const end = endDate ? new Date(endDate) : defaultEnd;
 
   const report = await reportService.getRevenueReport({
-    startDate: new Date(startDate),
-    endDate: new Date(endDate),
+    startDate: start,
+    endDate: end,
   });
 
   res.status(200).json({
@@ -48,13 +53,18 @@ export const getRevenueReport = asyncHandler(async (req, res, next) => {
 export const getOccupancyReport = asyncHandler(async (req, res, next) => {
   const { startDate, endDate } = req.query;
 
-  if (!startDate || !endDate) {
-    throw new AppError('Please provide startDate and endDate', 400);
-  }
+  const now = new Date();
+  const defaultStart = new Date(now);
+  defaultStart.setDate(defaultStart.getDate() - 7);
+  const defaultEnd = new Date(now);
+  defaultEnd.setDate(defaultEnd.getDate() + 7);
+
+  const start = startDate ? new Date(startDate) : defaultStart;
+  const end = endDate ? new Date(endDate) : defaultEnd;
 
   const report = await reportService.getOccupancyReport({
-    startDate: new Date(startDate),
-    endDate: new Date(endDate),
+    startDate: start,
+    endDate: end,
   });
 
   res.status(200).json({
@@ -103,13 +113,18 @@ export const getDepartures = asyncHandler(async (req, res, next) => {
 export const getRoomTypePerformance = asyncHandler(async (req, res, next) => {
   const { startDate, endDate } = req.query;
 
-  if (!startDate || !endDate) {
-    throw new AppError('Please provide startDate and endDate', 400);
-  }
+  const now = new Date();
+  const defaultStart = new Date(now);
+  defaultStart.setDate(defaultStart.getDate() - 30);
+  const defaultEnd = new Date(now);
+  defaultEnd.setDate(defaultEnd.getDate() + 30);
+
+  const start = startDate ? new Date(startDate) : defaultStart;
+  const end = endDate ? new Date(endDate) : defaultEnd;
 
   const report = await reportService.getRoomTypePerformance({
-    startDate: new Date(startDate),
-    endDate: new Date(endDate),
+    startDate: start,
+    endDate: end,
   });
 
   res.status(200).json({

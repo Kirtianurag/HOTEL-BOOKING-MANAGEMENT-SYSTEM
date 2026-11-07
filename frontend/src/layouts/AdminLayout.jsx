@@ -113,18 +113,11 @@ const AdminLayout = () => {
         {/* Top Navbar */}
         <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-30">
           <div className="flex items-center gap-3 text-xs text-slate-500 font-medium">
-            <Link to="/" className="hover:text-purple-600">
+            <Link to="/" className="hover:text-purple-600 transition-colors">
               Live Public Site
             </Link>
             <span>/</span>
             <span className="text-slate-800 font-semibold">Management Console</span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 text-xs text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 font-medium">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              API Connected
-            </span>
           </div>
         </header>
 

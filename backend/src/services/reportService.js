@@ -67,12 +67,12 @@ export const getDashboardStats = async () => {
     {
       $group: {
         _id: null,
-        totalRevenue: { $sum: '$totalAmount' },
+        totalRevenue: { $sum: { $ifNull: ['$pricing.totalAmount', '$totalAmount', 0] } },
       },
     },
   ]);
 
-  const totalRevenue = revenueAgg.length > 0 ? revenueAgg[0].totalRevenue : 0;
+  const totalRevenue = revenueAgg.length > 0 ? (revenueAgg[0].totalRevenue || 0) : 0;
 
   return {
     totalRooms,
@@ -122,7 +122,7 @@ export const getRevenueReport = async ({ startDate, endDate }) => {
         _id: {
           $dateToString: { format: '%Y-%m-%d', date: '$revenueDate' },
         },
-        dailyRevenue: { $sum: '$totalAmount' },
+        dailyRevenue: { $sum: { $ifNull: ['$pricing.totalAmount', '$totalAmount', 0] } },
         bookingCount: { $sum: 1 },
       },
     },
@@ -283,9 +283,9 @@ export const getRoomTypePerformance = async ({ startDate, endDate }) => {
     {
       $group: {
         _id: '$roomType',
-        totalRevenue: { $sum: '$totalAmount' },
+        totalRevenue: { $sum: { $ifNull: ['$pricing.totalAmount', '$totalAmount', 0] } },
         bookingCount: { $sum: 1 },
-        averageRate: { $avg: '$nightlyRate' },
+        averageRate: { $avg: { $ifNull: ['$pricing.nightlyRate', '$nightlyRate', 0] } },
         totalNights: { $sum: '$numberOfNights' },
       },
     },

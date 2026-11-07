@@ -41,20 +41,50 @@ const AdminDashboardPage = () => {
 
   const fetchDashboardData = async () => {
     setLoading(true);
+    setError('');
+
+    const today = new Date();
+    const start = new Date(today);
+    start.setDate(start.getDate() - 30);
+    const end = new Date(today);
+    end.setDate(end.getDate() + 30);
+
+    const startStr = start.toISOString().split('T')[0];
+    const endStr = end.toISOString().split('T')[0];
+    const dateQuery = `?startDate=${startStr}&endDate=${endStr}`;
+
     try {
-      const [statsRes, revRes, occRes, rtRes, resRes] = await Promise.all([
+      const results = await Promise.allSettled([
         api.get('/reports/dashboard'),
-        api.get('/reports/revenue'),
-        api.get('/reports/occupancy'),
-        api.get('/reports/room-types'),
+        api.get(`/reports/revenue${dateQuery}`),
+        api.get(`/reports/occupancy${dateQuery}`),
+        api.get(`/reports/room-types${dateQuery}`),
         api.get('/reservations/all?limit=5'),
       ]);
 
-      if (statsRes.success) setStats(statsRes.data);
-      if (revRes.success && revRes.data?.dailyBreakdown) setRevenueData(revRes.data.dailyBreakdown);
-      if (occRes.success && occRes.data?.dailyBreakdown) setOccupancyData(occRes.data.dailyBreakdown);
-      if (rtRes.success && rtRes.data) setRoomTypeData(rtRes.data);
-      if (resRes.success && resRes.data?.reservations) setRecentReservations(resRes.data.reservations);
+      const [statsRes, revRes, occRes, rtRes, resRes] = results;
+
+      if (statsRes.status === 'fulfilled' && statsRes.value?.success) {
+        setStats(statsRes.value.data);
+      } else if (statsRes.status === 'rejected') {
+        setError(statsRes.reason?.message || 'Failed to load executive statistics');
+      }
+
+      if (revRes.status === 'fulfilled' && revRes.value?.success && revRes.value.data?.dailyBreakdown) {
+        setRevenueData(revRes.value.data.dailyBreakdown);
+      }
+
+      if (occRes.status === 'fulfilled' && occRes.value?.success && occRes.value.data?.dailyBreakdown) {
+        setOccupancyData(occRes.value.data.dailyBreakdown);
+      }
+
+      if (rtRes.status === 'fulfilled' && rtRes.value?.success && rtRes.value.data) {
+        setRoomTypeData(rtRes.value.data);
+      }
+
+      if (resRes.status === 'fulfilled' && resRes.value?.success && resRes.value.data?.reservations) {
+        setRecentReservations(resRes.value.data.reservations);
+      }
     } catch (err) {
       setError(err.message || 'Failed to load dashboard data');
     } finally {
