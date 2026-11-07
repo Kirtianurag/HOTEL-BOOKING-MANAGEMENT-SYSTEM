@@ -47,7 +47,7 @@ const AdminReportsPage = () => {
   const fetchReports = async () => {
     setLoading(true);
     try {
-      const [revRes, occRes, arrRes, depRes, rtRes] = await Promise.all([
+      const results = await Promise.allSettled([
         api.get(`/reports/revenue?startDate=${startDate}&endDate=${endDate}`),
         api.get(`/reports/occupancy?startDate=${startDate}&endDate=${endDate}`),
         api.get('/reports/arrivals?days=14'),
@@ -55,13 +55,15 @@ const AdminReportsPage = () => {
         api.get(`/reports/room-types?startDate=${startDate}&endDate=${endDate}`),
       ]);
 
-      if (revRes.success) setRevenueReport(revRes.data);
-      if (occRes.success) setOccupancyReport(occRes.data);
-      if (arrRes.success) setArrivals(arrRes.data);
-      if (depRes.success) setDepartures(depRes.data);
-      if (rtRes.success) setRoomTypePerf(rtRes.data);
+      const [revRes, occRes, arrRes, depRes, rtRes] = results;
+
+      if (revRes.status === 'fulfilled' && revRes.value?.success) setRevenueReport(revRes.value.data);
+      if (occRes.status === 'fulfilled' && occRes.value?.success) setOccupancyReport(occRes.value.data);
+      if (arrRes.status === 'fulfilled' && arrRes.value?.success) setArrivals(arrRes.value.data);
+      if (depRes.status === 'fulfilled' && depRes.value?.success) setDepartures(depRes.value.data);
+      if (rtRes.status === 'fulfilled' && rtRes.value?.success) setRoomTypePerf(rtRes.value.data);
     } catch (err) {
-      console.error(err);
+      console.error('Failed to load reports:', err);
     } finally {
       setLoading(false);
     }

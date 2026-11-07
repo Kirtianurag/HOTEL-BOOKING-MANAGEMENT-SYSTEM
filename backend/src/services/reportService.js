@@ -212,7 +212,8 @@ export const getOccupancyReport = async ({ startDate, endDate }) => {
  * @param {number} [days=7]
  * @returns {Promise<Object[]>}
  */
-export const getUpcomingArrivals = async (days = 7) => {
+export const getUpcomingArrivals = async (params = 7) => {
+  const days = typeof params === 'object' && params !== null ? (Number(params.days) || 7) : (Number(params) || 7);
   const today = normalizeDate(new Date());
   const futureDate = new Date(today);
   futureDate.setUTCDate(futureDate.getUTCDate() + days);
@@ -223,7 +224,7 @@ export const getUpcomingArrivals = async (days = 7) => {
   })
     .populate('room')
     .populate('roomType')
-    .populate('user', '-password')
+    .populate('guest', '-password')
     .sort({ checkIn: 1 });
 
   return arrivals;
@@ -236,10 +237,11 @@ export const getUpcomingArrivals = async (days = 7) => {
 /**
  * CHECKED_IN reservations departing in the next N days.
  *
- * @param {number} [days=7]
+ * @param {number|Object} [params=7]
  * @returns {Promise<Object[]>}
  */
-export const getUpcomingDepartures = async (days = 7) => {
+export const getUpcomingDepartures = async (params = 7) => {
+  const days = typeof params === 'object' && params !== null ? (Number(params.days) || 7) : (Number(params) || 7);
   const today = normalizeDate(new Date());
   const futureDate = new Date(today);
   futureDate.setUTCDate(futureDate.getUTCDate() + days);
@@ -250,7 +252,7 @@ export const getUpcomingDepartures = async (days = 7) => {
   })
     .populate('room')
     .populate('roomType')
-    .populate('user', '-password')
+    .populate('guest', '-password')
     .sort({ checkOut: 1 });
 
   return departures;
