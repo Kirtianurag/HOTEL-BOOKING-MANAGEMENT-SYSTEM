@@ -16,11 +16,10 @@ import {
   User,
   ArrowRight,
   ChevronDown,
-  Sparkles,
   Check,
-  Star,
   ArrowLeft,
-  Loader2
+  Loader2,
+  KeyRound
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -83,102 +82,47 @@ const LoginPage = () => {
     setTimeout(() => setDemoSelected(''), 2500);
   };
 
-  // Luxury hotel imagery - Resort courtyard with pool and classical architecture
+  // High-resolution luxury hotel courtyard image with pool and classical architecture
   const luxuryHotelImage =
     'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=2000&q=85';
 
   return (
     <div className="min-h-screen w-full flex flex-col lg:flex-row bg-[#FFFFFF] text-slate-800 font-sans selection:bg-purple-100 selection:text-purple-900">
       {/* ─────────────────────────────────────────────────────────────
-          LEFT COLUMN: LUXURY HOSPITALITY VISUAL (52% Desktop Width)
+          LEFT COLUMN: LUXURY HOTEL PHOTOGRAPH (Clean & Uncluttered)
       ───────────────────────────────────────────────────────────── */}
-      <div className="relative w-full lg:w-[52%] xl:w-[54%] min-h-[360px] sm:min-h-[440px] lg:min-h-screen overflow-hidden flex flex-col justify-between p-8 sm:p-12 lg:p-16 bg-[#17122A] text-white shrink-0">
-        {/* Animated Background Hotel Image with Ken Burns Effect */}
-        <div className="absolute inset-0 z-0 overflow-hidden bg-linear-to-br from-purple-950 via-[#17122A] to-slate-950">
+      <div className="relative w-full lg:w-[52%] xl:w-[54%] min-h-[380px] sm:min-h-[460px] lg:min-h-screen overflow-hidden flex flex-col justify-end p-8 sm:p-12 lg:p-16 bg-slate-950 text-white shrink-0">
+        {/* Animated Background Hotel Image with Slow Ken Burns Movement */}
+        <div className="absolute inset-0 z-0 overflow-hidden bg-slate-950">
           <img
             src={luxuryHotelImage}
-            alt="StayEase Luxury Hotel Architecture"
-            className="w-full h-full object-cover object-center animate-ken-burns opacity-75 scale-105"
+            alt="Luxury Hotel Architecture"
+            className="w-full h-full object-cover object-center animate-ken-burns opacity-85 scale-105"
             onError={(e) => {
-              // Graceful fallback to rich dark luxury gradient if image fails to load
+              // Graceful fallback to dark neutral background if offline
               e.currentTarget.style.display = 'none';
             }}
           />
-          {/* Subtle Deep Luxury Overlays for High Legibility */}
-          <div className="absolute inset-0 bg-linear-to-t from-[#17122A] via-[#17122A]/50 to-[#17122A]/35" />
-          <div className="absolute inset-0 bg-radial-[circle_at_top_left] from-purple-900/30 via-transparent to-transparent" />
+          {/* Subtle Dark Overlay for High Legibility */}
+          <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/40 to-black/20" />
         </div>
 
-        {/* Top Brand Mark */}
-        <div className="relative z-10 flex items-center justify-between">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-3 group focus:outline-hidden"
-          >
-            <div className="w-11 h-11 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-transform duration-300">
-              <Hotel className="w-5 h-5 text-purple-300" />
-            </div>
-            <div>
-              <span className="text-2xl font-bold tracking-tight text-white flex items-center gap-0.5">
-                Stay<span className="text-purple-400">Ease</span>
-              </span>
-              <span className="block text-[10px] tracking-widest uppercase font-semibold text-purple-200/80 -mt-0.5">
-                Luxury Hospitality Platform
-              </span>
-            </div>
-          </Link>
-
-          {/* Mobile Back Link */}
-          <Link
-            to="/"
-            className="lg:hidden text-xs text-purple-200 hover:text-white inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-white/10 backdrop-blur-xs border border-white/15"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Home</span>
-          </Link>
-        </div>
-
-        {/* Hero Narrative & Architectural Typography */}
-        <div className="relative z-10 max-w-xl my-auto py-12 lg:py-0">
+        {/* Narrative Typography - Clean, Professional & Balanced */}
+        <div className="relative z-10 max-w-lg mb-2">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
           >
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold tracking-wider uppercase bg-purple-500/20 text-purple-200 border border-purple-400/30 backdrop-blur-md mb-5">
-              <Sparkles className="w-3.5 h-3.5 text-purple-300" />
-              <span>World-Class Living</span>
-            </span>
-
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+            <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight text-white leading-tight">
               Every stay <br />
-              <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-200 via-purple-300 to-indigo-200">
-                tells a story.
-              </span>
+              <span className="text-purple-200">tells a story.</span>
             </h1>
 
-            {/* Small decorative accent line */}
-            <div className="w-16 h-1 bg-linear-to-r from-purple-500 to-purple-300 rounded-full my-5" />
-
-            <p className="text-sm sm:text-base text-slate-300/90 font-light leading-relaxed max-w-lg">
+            <p className="mt-4 text-sm sm:text-base text-slate-200/90 font-normal leading-relaxed">
               Experience exceptional hospitality with effortless booking and seamless hotel management.
             </p>
           </motion.div>
-        </div>
-
-        {/* Bottom Social Proof & Trust Badges */}
-        <div className="relative z-10 hidden sm:flex items-center justify-between pt-6 border-t border-white/10 text-xs text-slate-300/80">
-          <div className="flex items-center gap-1.5">
-            <div className="flex text-amber-400">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
-              ))}
-            </div>
-            <span className="font-medium text-white ml-1">5-Star Standards</span>
-          </div>
-          <span className="text-slate-400 text-[11px]">
-            Real-time Inventory • Concurrency Protected
-          </span>
         </div>
       </div>
 
@@ -190,52 +134,50 @@ const LoginPage = () => {
         <div className="hidden lg:flex justify-end items-center">
           <Link
             to="/"
-            className="text-xs font-semibold text-slate-500 hover:text-purple-600 transition-colors inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full hover:bg-slate-50"
+            className="text-xs font-medium text-slate-500 hover:text-purple-600 transition-colors inline-flex items-center gap-1.5 py-1 px-3 rounded-full hover:bg-slate-50"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to website</span>
           </Link>
         </div>
 
-        {/* Centered Form Area (Max width ~430px) */}
-        <div className="w-full max-w-[430px] mx-auto my-auto py-4">
+        {/* Centered Form Area (Max width 430px) */}
+        <div className="w-full max-w-[430px] mx-auto my-auto py-6">
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+            transition={{ duration: 0.45, ease: 'easeOut' }}
           >
-            {/* Header */}
+            {/* StayEase Brand Header (On Form Panel Only) */}
             <div className="mb-8">
-              {/* Luxury Hospitality Brand Header */}
-              <div className="flex items-center gap-2.5 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center text-white shadow-md shadow-purple-500/20">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center text-white shadow-sm shadow-purple-600/20">
                   <Hotel className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <span className="text-xl font-bold tracking-tight text-[#17122A]">
                     Stay<span className="text-purple-600">Ease</span>
                   </span>
-                  <span className="block text-[9px] tracking-widest uppercase font-semibold text-slate-400 -mt-0.5">
+                  <span className="block text-[9px] tracking-widest uppercase font-semibold text-slate-400">
                     Hotels & Resorts
                   </span>
                 </div>
               </div>
 
-              <h2 className="text-3xl font-extrabold tracking-tight text-[#17122A] flex items-center gap-2">
-                <span>Welcome Back</span>
-                <span className="text-2xl select-none" role="img" aria-label="waving hand">👋</span>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#17122A]">
+                Welcome Back
               </h2>
-              <p className="text-sm text-slate-500 mt-2">
-                Please enter your credentials to manage your StayEase experience.
+              <p className="text-sm text-slate-500 mt-1.5">
+                Please enter your credentials to access your account.
               </p>
             </div>
 
             {/* Server Error Alert */}
             {serverError && (
               <motion.div
-                initial={{ opacity: 0, y: -8 }}
+                initial={{ opacity: 0, y: -6 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-start gap-2.5 shadow-2xs"
+                className="mb-6 p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-start gap-2.5"
               >
                 <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
                 <span className="leading-relaxed">{serverError}</span>
@@ -243,7 +185,7 @@ const LoginPage = () => {
             )}
 
             {/* Main Form */}
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               {/* Email Address */}
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
@@ -256,7 +198,7 @@ const LoginPage = () => {
                     {...register('email')}
                     placeholder="john.watson@example.com"
                     autoComplete="email"
-                    className="w-full pl-10 pr-4 py-3 bg-[#FFFFFF] border border-[#E5E7EB] rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-purple-600 focus:ring-4 focus:ring-purple-500/10 transition-all shadow-2xs"
+                    className="w-full pl-10 pr-4 py-2.5 bg-[#FFFFFF] border border-[#E5E7EB] rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-purple-600 focus:ring-3 focus:ring-purple-500/10 transition-all shadow-2xs"
                   />
                 </div>
                 {errors.email && (
@@ -276,7 +218,7 @@ const LoginPage = () => {
                     href="#forgot"
                     onClick={(e) => {
                       e.preventDefault();
-                      alert('To reset your password in this demo environment, please sign in with an active demo account or contact administrator at admin@stayease.demo');
+                      alert('Password recovery: please sign in using one of the demo accounts below or contact admin@stayease.demo.');
                     }}
                     className="text-xs font-medium text-slate-500 hover:text-purple-600 transition-colors"
                   >
@@ -290,12 +232,12 @@ const LoginPage = () => {
                     {...register('password')}
                     placeholder="••••••••••••"
                     autoComplete="current-password"
-                    className="w-full pl-10 pr-11 py-3 bg-[#FFFFFF] border border-[#E5E7EB] rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-purple-600 focus:ring-4 focus:ring-purple-500/10 transition-all shadow-2xs font-mono"
+                    className="w-full pl-10 pr-11 py-2.5 bg-[#FFFFFF] border border-[#E5E7EB] rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:border-purple-600 focus:ring-3 focus:ring-purple-500/10 transition-all shadow-2xs font-mono"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1.5 rounded-lg focus:outline-hidden"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 rounded-lg focus:outline-hidden cursor-pointer"
                     title={showPassword ? 'Hide password' : 'Show password'}
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -309,13 +251,13 @@ const LoginPage = () => {
               </div>
 
               {/* Remember Me Checkbox */}
-              <div className="flex items-center">
-                <label className="flex items-center gap-2.5 text-xs text-slate-600 font-medium cursor-pointer select-none">
+              <div className="flex items-center pt-0.5">
+                <label className="flex items-center gap-2 text-xs text-slate-600 font-medium cursor-pointer select-none">
                   <input
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    className="w-4 h-4 rounded-md border-slate-300 text-purple-600 focus:ring-purple-500 cursor-pointer accent-purple-600"
+                    className="w-4 h-4 rounded-md border-[#E5E7EB] text-purple-600 focus:ring-purple-500 cursor-pointer accent-purple-600"
                   />
                   <span>Remember Me</span>
                 </label>
@@ -323,16 +265,16 @@ const LoginPage = () => {
 
               {/* Submit Button */}
               <motion.button
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
+                whileHover={{ scale: 1.005 }}
+                whileTap={{ scale: 0.995 }}
                 type="submit"
                 disabled={submitting}
-                className="w-full py-3.5 bg-purple-600 hover:bg-purple-700 text-white font-semibold text-sm rounded-xl shadow-md shadow-purple-300/40 hover:shadow-lg hover:shadow-purple-400/40 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                className="w-full mt-2 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium text-sm rounded-xl shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
               >
                 {submitting ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin text-white" />
-                    <span>Signing in to StayEase...</span>
+                    <span>Signing in...</span>
                   </>
                 ) : (
                   <>
@@ -343,13 +285,13 @@ const LoginPage = () => {
               </motion.button>
             </form>
 
-            {/* Or sign in with Divider */}
+            {/* Divider */}
             <div className="relative my-6 text-center">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-[#E5E7EB]" />
               </div>
               <div className="relative flex justify-center text-xs">
-                <span className="bg-[#FFFFFF] px-3 text-slate-400 font-medium">
+                <span className="bg-[#FFFFFF] px-3 text-slate-400 font-normal">
                   Or sign in with
                 </span>
               </div>
@@ -360,8 +302,8 @@ const LoginPage = () => {
               <button
                 type="button"
                 onClick={() => fillDemo('guest', 'guest@stayease.demo', 'Guest@123')}
-                className="flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-xl border border-[#E5E7EB] hover:border-slate-300 hover:bg-slate-50/70 text-xs font-semibold text-slate-700 transition-all shadow-2xs group cursor-pointer"
-                title="Instant Demo Sign In as Guest"
+                className="flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-xl border border-[#E5E7EB] hover:border-slate-300 hover:bg-slate-50 text-xs font-medium text-slate-700 transition-colors shadow-2xs cursor-pointer"
+                title="Quick Demo Sign In as Guest"
               >
                 <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                   <path
@@ -387,8 +329,8 @@ const LoginPage = () => {
               <button
                 type="button"
                 onClick={() => fillDemo('guest', 'guest@stayease.demo', 'Guest@123')}
-                className="flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-xl border border-[#E5E7EB] hover:border-slate-300 hover:bg-slate-50/70 text-xs font-semibold text-slate-700 transition-all shadow-2xs group cursor-pointer"
-                title="Instant Demo Sign In as Guest"
+                className="flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-xl border border-[#E5E7EB] hover:border-slate-300 hover:bg-slate-50 text-xs font-medium text-slate-700 transition-colors shadow-2xs cursor-pointer"
+                title="Quick Demo Sign In as Guest"
               >
                 <svg className="w-4 h-4 shrink-0 fill-current text-slate-900" viewBox="0 0 24 24">
                   <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.16c.66-.82 1.11-1.96.99-3.1-.96.04-2.13.65-2.82 1.46-.61.71-1.14 1.87-1 2.98 1.08.08 2.18-.54 2.83-1.34z" />
@@ -409,21 +351,18 @@ const LoginPage = () => {
             </div>
 
             {/* ─────────────────────────────────────────────────────────────
-                COMPACT EXPANDABLE DEMO ACCOUNTS SECTION
+                CLEAN EXPANDABLE DEMO ACCOUNTS SECTION
             ───────────────────────────────────────────────────────────── */}
             <div className="mt-8 pt-6 border-t border-slate-100">
               <button
                 type="button"
                 onClick={() => setShowDemoAccounts(!showDemoAccounts)}
-                className="w-full flex items-center justify-between py-2 px-3.5 rounded-xl bg-[#F8F7FC] hover:bg-purple-50/60 border border-slate-200/80 transition-colors text-left group"
+                className="w-full flex items-center justify-between py-2.5 px-3.5 rounded-xl bg-slate-50 hover:bg-purple-50/50 border border-slate-200 transition-colors text-left cursor-pointer group"
               >
                 <div className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-purple-600" />
-                  <span className="text-xs font-semibold text-slate-700 group-hover:text-purple-700">
+                  <KeyRound className="w-4 h-4 text-purple-600" />
+                  <span className="text-xs font-medium text-slate-700 group-hover:text-purple-700">
                     Explore demo accounts
-                  </span>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-purple-600 bg-purple-100/70 px-2 py-0.5 rounded-full">
-                    Demo Mode
                   </span>
                 </div>
                 <ChevronDown
@@ -440,27 +379,27 @@ const LoginPage = () => {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.25, ease: 'easeInOut' }}
+                    transition={{ duration: 0.2, ease: 'easeInOut' }}
                     className="overflow-hidden"
                   >
                     <div className="pt-3 pb-1 space-y-2">
-                      <p className="text-[11px] text-slate-400 px-1">
-                        Select a role to instantly autofill test credentials from the seed database:
+                      <p className="text-[11px] text-slate-500 px-1">
+                        Select a role to autofill test credentials:
                       </p>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                         {/* Admin */}
                         <button
                           type="button"
                           onClick={() => fillDemo('admin', 'admin@stayease.demo', 'Admin@123')}
-                          className={`p-2.5 rounded-xl border text-left transition-all flex flex-col justify-between ${
+                          className={`p-2.5 rounded-xl border text-left transition-all flex flex-col justify-between cursor-pointer ${
                             demoSelected === 'admin'
                               ? 'border-purple-600 bg-purple-50 text-purple-900 ring-2 ring-purple-500/20'
                               : 'border-slate-200 bg-white hover:border-purple-300 hover:bg-purple-50/30'
                           }`}
                         >
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                            <span className="text-xs font-semibold text-slate-900 flex items-center gap-1.5">
                               <Shield className="w-3.5 h-3.5 text-purple-600" />
                               Admin
                             </span>
@@ -468,7 +407,7 @@ const LoginPage = () => {
                               <Check className="w-3 h-3 text-purple-600" />
                             )}
                           </div>
-                          <span className="text-[10px] text-slate-400 font-mono truncate">
+                          <span className="text-[10px] text-slate-500 font-mono truncate">
                             admin@stayease.demo
                           </span>
                         </button>
@@ -477,14 +416,14 @@ const LoginPage = () => {
                         <button
                           type="button"
                           onClick={() => fillDemo('staff', 'staff@stayease.demo', 'Staff@123')}
-                          className={`p-2.5 rounded-xl border text-left transition-all flex flex-col justify-between ${
+                          className={`p-2.5 rounded-xl border text-left transition-all flex flex-col justify-between cursor-pointer ${
                             demoSelected === 'staff'
                               ? 'border-purple-600 bg-purple-50 text-purple-900 ring-2 ring-purple-500/20'
                               : 'border-slate-200 bg-white hover:border-purple-300 hover:bg-purple-50/30'
                           }`}
                         >
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                            <span className="text-xs font-semibold text-slate-900 flex items-center gap-1.5">
                               <Briefcase className="w-3.5 h-3.5 text-purple-600" />
                               Staff
                             </span>
@@ -492,7 +431,7 @@ const LoginPage = () => {
                               <Check className="w-3 h-3 text-purple-600" />
                             )}
                           </div>
-                          <span className="text-[10px] text-slate-400 font-mono truncate">
+                          <span className="text-[10px] text-slate-500 font-mono truncate">
                             staff@stayease.demo
                           </span>
                         </button>
@@ -501,14 +440,14 @@ const LoginPage = () => {
                         <button
                           type="button"
                           onClick={() => fillDemo('guest', 'guest@stayease.demo', 'Guest@123')}
-                          className={`p-2.5 rounded-xl border text-left transition-all flex flex-col justify-between ${
+                          className={`p-2.5 rounded-xl border text-left transition-all flex flex-col justify-between cursor-pointer ${
                             demoSelected === 'guest'
                               ? 'border-purple-600 bg-purple-50 text-purple-900 ring-2 ring-purple-500/20'
                               : 'border-slate-200 bg-white hover:border-purple-300 hover:bg-purple-50/30'
                           }`}
                         >
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                            <span className="text-xs font-semibold text-slate-900 flex items-center gap-1.5">
                               <User className="w-3.5 h-3.5 text-purple-600" />
                               Guest
                             </span>
@@ -516,7 +455,7 @@ const LoginPage = () => {
                               <Check className="w-3 h-3 text-purple-600" />
                             )}
                           </div>
-                          <span className="text-[10px] text-slate-400 font-mono truncate">
+                          <span className="text-[10px] text-slate-500 font-mono truncate">
                             guest@stayease.demo
                           </span>
                         </button>
@@ -531,8 +470,8 @@ const LoginPage = () => {
 
         {/* Bottom Micro Footer */}
         <div className="pt-6 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
-          <span>© {new Date().getFullYear()} StayEase Platform</span>
-          <span>Privacy & Terms</span>
+          <span>© {new Date().getFullYear()} StayEase</span>
+          <span>Privacy Policy • Terms of Service</span>
         </div>
       </div>
     </div>

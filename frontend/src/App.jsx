@@ -68,11 +68,7 @@ function App() {
           />
           <Route
             path="/register"
-            element={
-              <PublicLayout>
-                <RegisterPage />
-              </PublicLayout>
-            }
+            element={<RegisterPage />}
           />
 
           {/* Protected Guest Routes */}
