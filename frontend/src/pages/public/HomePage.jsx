@@ -5,7 +5,7 @@ import {
   Wifi,
   Tv,
   Coffee,
-  Sparkles,
+  Hotel,
   ShieldCheck,
   Clock,
   Award,
@@ -83,7 +83,7 @@ const HomePage = () => {
             transition={{ duration: 0.6 }}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-purple-200 text-xs font-semibold tracking-wide uppercase mb-6"
           >
-            <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+            <Hotel className="w-3.5 h-3.5 text-purple-300" />
             <span>Luxury Hospitality & Seamless Booking</span>
           </motion.div>
 
