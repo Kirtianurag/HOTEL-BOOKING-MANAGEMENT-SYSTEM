@@ -153,7 +153,7 @@ const BookingSearchBar = ({ initialValues = {}, onSearch, compact = false }) => 
             <option value="">All Room Types</option>
             {roomTypes.map((rt) => (
               <option key={rt._id} value={rt._id}>
-                {rt.name} (${rt.baseRate}/nt)
+                {rt.name} (₹{rt.baseRate}/nt)
               </option>
             ))}
           </select>

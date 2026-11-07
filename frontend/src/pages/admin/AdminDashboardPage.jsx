@@ -182,7 +182,7 @@ const AdminDashboardPage = () => {
             Total Revenue
           </span>
           <span className="text-2xl font-black text-purple-700">
-            ${stats?.totalRevenue ? stats.totalRevenue.toFixed(0) : '0'}
+            ₹{stats?.totalRevenue ? stats.totalRevenue.toFixed(0) : '0'}
           </span>
           <span className="text-[10px] text-purple-600 block mt-1">Verified earnings</span>
         </div>
@@ -219,7 +219,7 @@ const AdminDashboardPage = () => {
                   <YAxis tick={{ fontSize: 11, fill: '#64748b' }} />
                   <Tooltip
                     contentStyle={{ backgroundColor: '#fff', borderRadius: '12px', border: '1px solid #e2e8f0', fontSize: '12px' }}
-                    formatter={(val) => [`$${val.toFixed(2)}`, 'Revenue']}
+                    formatter={(val) => [`₹${val.toFixed(2)}`, 'Revenue']}
                   />
                   <Area type="monotone" dataKey="revenue" stroke="#7c3aed" strokeWidth={2.5} fillOpacity={1} fill="url(#colorRev)" />
                 </AreaChart>
@@ -259,7 +259,7 @@ const AdminDashboardPage = () => {
                   </Pie>
                   <Tooltip
                     contentStyle={{ backgroundColor: '#fff', borderRadius: '12px', border: '1px solid #e2e8f0', fontSize: '12px' }}
-                    formatter={(val) => [`$${val.toFixed(2)}`, 'Total']}
+                    formatter={(val) => [`₹${val.toFixed(2)}`, 'Total']}
                   />
                 </PieChart>
               </ResponsiveContainer>
@@ -333,7 +333,7 @@ const AdminDashboardPage = () => {
                       {inDate} → {outDate}
                     </td>
                     <td className="py-3.5 px-6 font-bold text-slate-900">
-                      ${r.pricing?.totalAmount?.toFixed(2)}
+                      ₹{r.pricing?.totalAmount?.toFixed(2)}
                     </td>
                     <td className="py-3.5 px-6">
                       <Badge status={r.status} />

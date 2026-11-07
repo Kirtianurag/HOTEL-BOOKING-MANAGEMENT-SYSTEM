@@ -194,7 +194,7 @@ const AdminRoomsPage = () => {
                       {r.roomType?.maxOccupancy} Guests
                     </td>
                     <td className="py-3.5 px-6 font-bold text-slate-900">
-                      ${r.roomType?.baseRate?.toFixed(2)}/nt
+                      ₹{r.roomType?.baseRate?.toFixed(2)}/nt
                     </td>
                     <td className="py-3.5 px-6">
                       <select
@@ -257,7 +257,7 @@ const AdminRoomsPage = () => {
             >
               {roomTypes.map((rt) => (
                 <option key={rt._id} value={rt._id}>
-                  {rt.name} (${rt.baseRate}/night - Max {rt.maxOccupancy} Guests)
+                  {rt.name} (₹{rt.baseRate}/night - Max {rt.maxOccupancy} Guests)
                 </option>
               ))}
             </select>

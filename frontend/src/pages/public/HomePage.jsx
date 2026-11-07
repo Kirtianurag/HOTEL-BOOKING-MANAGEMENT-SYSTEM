@@ -191,7 +191,7 @@ const HomePage = () => {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                       <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-full text-xs font-bold text-slate-900 shadow-xs">
-                        ${rt.baseRate} <span className="text-[10px] font-normal text-slate-500">/ night</span>
+                        ₹{rt.baseRate} <span className="text-[10px] font-normal text-slate-500">/ night</span>
                       </div>
                       <div className="absolute bottom-3 left-3 bg-slate-900/70 backdrop-blur-md px-2.5 py-1 rounded-full text-xs font-medium text-white flex items-center gap-1">
                         <Users className="w-3 h-3 text-purple-300" />

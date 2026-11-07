@@ -134,7 +134,7 @@ const AdminReportsPage = () => {
                 Total Period Revenue
               </span>
               <div className="text-3xl font-black text-slate-900 mt-2">
-                ${revenueReport?.totalRevenue ? revenueReport.totalRevenue.toFixed(2) : '0.00'}
+                ₹{revenueReport?.totalRevenue ? revenueReport.totalRevenue.toFixed(2) : '0.00'}
               </div>
               <p className="text-xs text-slate-400 mt-1">
                 Excludes cancelled and expired hold reservations.
@@ -241,10 +241,10 @@ const AdminReportsPage = () => {
                         {rt.totalNights} nights
                       </td>
                       <td className="py-3.5 px-6 text-slate-600 font-mono">
-                        ${rt.averageRate ? rt.averageRate.toFixed(2) : '0.00'}
+                        ₹{rt.averageRate ? rt.averageRate.toFixed(2) : '0.00'}
                       </td>
                       <td className="py-3.5 px-6 text-right font-black text-purple-700 text-sm">
-                        ${rt.totalRevenue?.toFixed(2)}
+                        ₹{rt.totalRevenue?.toFixed(2)}
                       </td>
                     </tr>
                   ))}

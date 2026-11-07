@@ -150,9 +150,8 @@ const MyBookingsPage = () => {
                         <Calendar className="w-3.5 h-3.5 text-slate-400" />
                         {inDate} → {outDate} ({b.numberOfNights} Nights)
                       </span>
-                      <span className="flex items-center gap-1.5 font-semibold text-slate-900">
-                        <DollarSign className="w-3.5 h-3.5 text-slate-400 -mr-1" />
-                        ${b.pricing?.totalAmount?.toFixed(2)}
+                      <span className="flex items-center gap-1 font-semibold text-slate-900">
+                        ₹{b.pricing?.totalAmount?.toFixed(2)}
                       </span>
                     </div>
 

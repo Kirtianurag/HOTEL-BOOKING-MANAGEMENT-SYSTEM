@@ -234,14 +234,14 @@ const RoomsPage = () => {
                         <div>
                           <div className="flex items-baseline gap-1">
                             <span className="text-2xl font-extrabold text-slate-900">
-                              ${pricing?.totalAmount?.toFixed(2)}
+                              ₹{pricing?.totalAmount?.toFixed(2)}
                             </span>
                             <span className="text-xs text-slate-500 font-medium">
                               total ({pricing?.numberOfNights} night{pricing?.numberOfNights > 1 ? 's' : ''})
                             </span>
                           </div>
                           <div className="text-[11px] text-slate-400">
-                            ${pricing?.nightlyRate?.toFixed(2)}/nt + ${(pricing?.taxAmount || 0).toFixed(2)} tax (12%)
+                            ₹{pricing?.nightlyRate?.toFixed(2)}/nt + ₹{(pricing?.taxAmount || 0).toFixed(2)} tax (12%)
                           </div>
                         </div>
 

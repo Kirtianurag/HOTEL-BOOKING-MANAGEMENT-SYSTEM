@@ -336,23 +336,23 @@ const BookingFlowPage = () => {
               {/* Itemized Price Breakdown */}
               <div className="py-4 border-b border-slate-100 space-y-2 text-xs">
                 <div className="flex justify-between text-slate-600">
-                  <span>Room Rate ({pricing?.numberOfNights} × ${pricing?.nightlyRate?.toFixed(2)})</span>
-                  <span>${pricing?.subtotal?.toFixed(2)}</span>
+                  <span>Room Rate ({pricing?.numberOfNights} × ₹{pricing?.nightlyRate?.toFixed(2)})</span>
+                  <span>₹{pricing?.subtotal?.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-slate-600">
                   <span>State & Hotel Tax (12%)</span>
-                  <span>${pricing?.taxAmount?.toFixed(2)}</span>
+                  <span>₹{pricing?.taxAmount?.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-emerald-600 font-medium">
                   <span>Booking & Service Fee</span>
-                  <span>$0.00 (Free)</span>
+                  <span>₹0.00 (Free)</span>
                 </div>
               </div>
 
               <div className="pt-4 flex justify-between items-baseline">
                 <span className="text-sm font-bold text-slate-800">Grand Total</span>
                 <span className="text-2xl font-extrabold text-purple-600">
-                  ${pricing?.totalAmount?.toFixed(2)}
+                  ₹{pricing?.totalAmount?.toFixed(2)}
                 </span>
               </div>
             </div>
@@ -403,7 +403,7 @@ const BookingFlowPage = () => {
                 <div className="text-right">
                   <span className="text-xs text-slate-400 block">Total Due</span>
                   <span className="text-2xl font-black text-slate-900">
-                    ${reservation.pricing?.totalAmount?.toFixed(2)}
+                    ₹{reservation.pricing?.totalAmount?.toFixed(2)}
                   </span>
                 </div>
               </div>
@@ -498,7 +498,7 @@ const BookingFlowPage = () => {
                   ) : (
                     <>
                       <ShieldCheck className="w-5 h-5" />
-                      <span>Confirm & Pay ${reservation.pricing?.totalAmount?.toFixed(2)}</span>
+                      <span>Confirm & Pay ₹{reservation.pricing?.totalAmount?.toFixed(2)}</span>
                     </>
                   )}
                 </button>
@@ -582,7 +582,7 @@ const BookingFlowPage = () => {
               <div>
                 <span className="text-slate-400 block mb-0.5">Total Paid (Simulated)</span>
                 <span className="font-bold text-slate-900 text-sm">
-                  ${reservation.pricing?.totalAmount?.toFixed(2)}
+                  ₹{reservation.pricing?.totalAmount?.toFixed(2)}
                 </span>
               </div>
             </div>

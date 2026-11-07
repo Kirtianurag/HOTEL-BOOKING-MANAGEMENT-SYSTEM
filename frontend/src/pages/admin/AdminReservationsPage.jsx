@@ -180,7 +180,7 @@ const AdminReservationsPage = () => {
                       <td className="py-3.5 px-6 text-slate-600">{inDate}</td>
                       <td className="py-3.5 px-6 text-slate-600">{outDate}</td>
                       <td className="py-3.5 px-6 font-bold text-slate-900">
-                        ${r.pricing?.totalAmount?.toFixed(2)}
+                        ₹{r.pricing?.totalAmount?.toFixed(2)}
                       </td>
                       <td className="py-3.5 px-6">
                         <Badge status={r.status} />
@@ -273,15 +273,15 @@ const AdminReservationsPage = () => {
             <div className="p-3 bg-slate-50 rounded-xl space-y-1.5">
               <div className="flex justify-between text-slate-600">
                 <span>Subtotal ({selectedRes.numberOfNights} nights)</span>
-                <span>${selectedRes.pricing?.subtotal?.toFixed(2)}</span>
+                <span>₹{selectedRes.pricing?.subtotal?.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-slate-600">
                 <span>Tax Amount (12%)</span>
-                <span>${selectedRes.pricing?.taxAmount?.toFixed(2)}</span>
+                <span>₹{selectedRes.pricing?.taxAmount?.toFixed(2)}</span>
               </div>
               <div className="flex justify-between font-bold text-slate-900 pt-1 border-t border-slate-200">
                 <span>Grand Total</span>
-                <span>${selectedRes.pricing?.totalAmount?.toFixed(2)}</span>
+                <span>₹{selectedRes.pricing?.totalAmount?.toFixed(2)}</span>
               </div>
             </div>
 

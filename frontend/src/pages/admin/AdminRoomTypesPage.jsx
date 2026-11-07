@@ -204,7 +204,7 @@ const AdminRoomTypesPage = () => {
                   Max {rt.maxOccupancy} Guests
                 </span>
                 <span className="text-lg font-black text-slate-900">
-                  ${rt.baseRate?.toFixed(2)} <span className="text-xs font-normal text-slate-400">/ night</span>
+                  ₹{rt.baseRate?.toFixed(2)} <span className="text-xs font-normal text-slate-400">/ night</span>
                 </span>
               </div>
             </div>
@@ -264,7 +264,7 @@ const AdminRoomTypesPage = () => {
 
             <div>
               <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
-                Base Nightly Rate ($) *
+                Base Nightly Rate (₹) *
               </label>
               <input
                 type="number"
