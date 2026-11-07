@@ -81,7 +81,6 @@ export const createHold = async ({ roomId, reservationId, checkIn, checkOut, hol
     } catch (txErr) {
       if (session) {
         try { await session.abortTransaction(); } catch (_) {}
-        session.endSession();
       }
 
       // If standalone Mongo environment without replica set, execute atomic insert directly
@@ -96,6 +95,10 @@ export const createHold = async ({ roomId, reservationId, checkIn, checkOut, hol
         return createdLocks;
       }
       throw txErr;
+    } finally {
+      if (session) {
+        session.endSession();
+      }
     }
   } catch (error) {
     // Clean up partial locks if any

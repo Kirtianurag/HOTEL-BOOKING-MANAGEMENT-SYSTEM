@@ -52,7 +52,11 @@ export const calculatePrice = async ({ roomType, checkIn, checkOut, roomTypeId }
       return normalized >= ruleStart && normalized <= ruleEnd;
     });
 
-    const rate = matchingRule ? matchingRule.rate : roomType.baseRate;
+    // RateRule uses nightlyRate (fallback to rate or roomType.baseRate)
+    const rawRate = matchingRule
+      ? (matchingRule.nightlyRate ?? matchingRule.rate)
+      : (roomType?.baseRate ?? 0);
+    const rate = Number(rawRate) || 0;
     const ruleName = matchingRule ? matchingRule.name : null;
 
     return {
@@ -63,12 +67,12 @@ export const calculatePrice = async ({ roomType, checkIn, checkOut, roomTypeId }
   });
 
   // Totals
-  const subtotal = nightlyBreakdown.reduce((sum, n) => sum + n.rate, 0);
+  const subtotal = Math.round(nightlyBreakdown.reduce((sum, n) => sum + (Number(n.rate) || 0), 0) * 100) / 100;
   const taxAmount = Math.round(subtotal * TAX_RATE * 100) / 100; // round to cents
   const totalAmount = Math.round((subtotal + taxAmount) * 100) / 100;
 
   return {
-    nightlyRate: roomType.baseRate,
+    nightlyRate: Number(roomType?.baseRate ?? (nightlyBreakdown[0]?.rate ?? 0)),
     nightlyBreakdown,
     numberOfNights,
     subtotal,

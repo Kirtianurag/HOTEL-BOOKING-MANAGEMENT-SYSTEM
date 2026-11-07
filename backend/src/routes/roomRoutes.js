@@ -7,12 +7,14 @@ import {
   deleteRoom,
   updateRoomStatus,
 } from '../controllers/roomController.js';
+import { searchAvailability } from '../controllers/availabilityController.js';
 import { protect } from '../middleware/authMiddleware.js';
 import { authorize } from '../middleware/roleMiddleware.js';
 
 const router = Router();
 
 router.get('/', getRooms);
+router.get('/available', searchAvailability);
 router.get('/:id', getRoom);
 router.post('/', protect, authorize('admin'), createRoom);
 router.put('/:id', protect, authorize('admin'), updateRoom);
