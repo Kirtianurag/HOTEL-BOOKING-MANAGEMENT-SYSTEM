@@ -11,7 +11,7 @@ import {
   Eye,
   EyeOff,
   AlertCircle,
-  Shield,
+  LayoutDashboard,
   Briefcase,
   User,
   ArrowRight,
@@ -400,7 +400,7 @@ const LoginPage = () => {
                         >
                           <div className="flex items-center justify-between mb-1">
                             <span className="text-xs font-semibold text-slate-900 flex items-center gap-1.5">
-                              <Shield className="w-3.5 h-3.5 text-purple-600" />
+                              <LayoutDashboard className="w-3.5 h-3.5 text-purple-600" />
                               Admin
                             </span>
                             {demoSelected === 'admin' && (

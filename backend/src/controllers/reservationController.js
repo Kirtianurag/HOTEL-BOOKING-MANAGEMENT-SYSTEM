@@ -59,6 +59,7 @@ export const cancelReservation = asyncHandler(async (req, res, next) => {
   const reservation = await reservationService.cancelReservation({
     reservationId: req.params.id,
     userId: req.user._id,
+    userRole: req.user.role,
     reason,
   });
 
