@@ -77,7 +77,7 @@ const RegisterPage = () => {
       {/* ─────────────────────────────────────────────────────────────
           LEFT COLUMN: LUXURY HOTEL PHOTOGRAPH (Clean & Uncluttered)
       ───────────────────────────────────────────────────────────── */}
-      <div className="relative w-full lg:w-[52%] xl:w-[54%] min-h-[420px] sm:min-h-[500px] lg:min-h-screen overflow-hidden flex flex-col justify-end p-8 sm:p-12 lg:p-16 pb-16 sm:pb-20 lg:pb-24 bg-slate-950 text-white shrink-0">
+      <div className="relative w-full lg:w-[52%] xl:w-[54%] min-h-[420px] sm:min-h-[500px] lg:min-h-screen overflow-hidden flex flex-col justify-end p-8 sm:p-12 lg:p-16 pb-28 sm:pb-36 lg:pb-40 bg-slate-950 text-white shrink-0">
         {/* Animated Background Hotel Image with Slow Ken Burns Movement */}
         <div className="absolute inset-0 z-0 overflow-hidden bg-slate-950">
           <img
@@ -93,7 +93,7 @@ const RegisterPage = () => {
         </div>
 
         {/* Narrative Typography - Lifted & Balanced */}
-        <div className="relative z-10 max-w-lg mb-6 sm:mb-10 lg:mb-12">
+        <div className="relative z-10 max-w-lg mb-10 sm:mb-16 lg:mb-20">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
