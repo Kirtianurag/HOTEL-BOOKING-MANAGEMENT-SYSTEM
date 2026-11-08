@@ -76,17 +76,6 @@ const HomePage = () => {
 
         {/* Hero Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex flex-col items-center text-center">
-          {/* Subtle floating badge */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-purple-200 text-xs font-semibold tracking-wide uppercase mb-6"
-          >
-            <Hotel className="w-3.5 h-3.5 text-purple-300" />
-            <span>Luxury Hospitality & Seamless Booking</span>
-          </motion.div>
-
           {/* Main Heading */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -134,7 +123,7 @@ const HomePage = () => {
               <CheckCircle2 className="w-4 h-4 text-purple-400" /> Real-time Inventory Locks
             </span>
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-purple-400" /> 24/7 Concierge Support
+              <CheckCircle2 className="w-4 h-4 text-purple-400" /> 24/7 Customer Support
             </span>
           </motion.div>
         </div>
@@ -359,9 +348,6 @@ const HomePage = () => {
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 mt-2">
               Loved by Travelers Worldwide
             </h2>
-            <p className="text-xs text-slate-400 mt-1 italic">
-              (Sample verified demo testimonials for placement assessment)
-            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -462,26 +448,34 @@ const HomePage = () => {
               </div>
             </div>
 
-            <div className="relative">
-              <div className="rounded-3xl overflow-hidden border border-slate-100 shadow-2xl">
-                <img
-                  src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1000&q=80"
-                  alt="Hotel Resort Pool"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              {/* Overlay Stat Card */}
-              <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl p-5 shadow-xl border border-slate-100 max-w-xs hidden sm:block">
+            <div className="relative rounded-3xl overflow-hidden border border-slate-100 shadow-2xl">
+              <img
+                src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1000&q=80"
+                alt="Hotel Resort Pool"
+                className="w-full h-full object-cover min-h-[380px]"
+              />
+
+              {/* Floating Stat Card Directly On The Image */}
+              <motion.div
+                initial={{ y: 0 }}
+                animate={{ y: [-5, 5, -5] }}
+                transition={{
+                  duration: 4.5,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="absolute bottom-6 left-6 z-10 bg-white/95 backdrop-blur-md rounded-2xl p-4 sm:p-5 shadow-2xl border border-white/80 max-w-[280px] sm:max-w-xs"
+              >
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-purple-600 text-white flex items-center justify-center font-bold text-xl">
-                    99%
+                  <div className="w-12 h-12 rounded-xl bg-purple-600 text-white grid place-items-center font-black text-lg leading-none tracking-tight shadow-md shadow-purple-300/60 shrink-0 select-none text-center">
+                    <span className="leading-none text-center block">99%</span>
                   </div>
                   <div>
-                    <h5 className="text-sm font-bold text-slate-900">Guest Satisfaction</h5>
-                    <p className="text-xs text-slate-500">Based on 2,500+ verified stays</p>
+                    <h5 className="text-sm font-bold text-slate-900 leading-tight">Guest Satisfaction</h5>
+                    <p className="text-xs text-slate-500 mt-0.5">Based on 2,500+ verified stays</p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>

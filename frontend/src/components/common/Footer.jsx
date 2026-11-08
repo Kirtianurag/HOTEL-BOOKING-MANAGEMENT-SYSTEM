@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Hotel, Mail, Phone, MapPin, Heart, Shield, Award, Clock } from 'lucide-react';
+import { Hotel, Mail, Phone, MapPin, Clock } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -20,14 +20,6 @@ const Footer = () => {
             <p className="text-sm text-slate-400 leading-relaxed">
               Experience unparalleled hospitality and seamless luxury accommodations. Built with architectural integrity and modern booking perfection.
             </p>
-            <div className="flex gap-4 pt-2">
-              <span className="inline-flex items-center gap-1.5 text-xs text-purple-400 bg-purple-950/60 px-2.5 py-1 rounded-full border border-purple-800/40">
-                <Award className="w-3.5 h-3.5" /> 5-Star Rated
-              </span>
-              <span className="inline-flex items-center gap-1.5 text-xs text-purple-400 bg-purple-950/60 px-2.5 py-1 rounded-full border border-purple-800/40">
-                <Shield className="w-3.5 h-3.5" /> Verified Stay
-              </span>
-            </div>
           </div>
 
           {/* Quick Links */}
@@ -121,9 +113,6 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
           <p>© {new Date().getFullYear()} StayEase Hotel Booking Management System. All rights reserved.</p>
-          <p className="flex items-center gap-1">
-            Engineered with <Heart className="w-3.5 h-3.5 text-purple-500 fill-purple-500 inline" /> for Algions AI Labs Internship Assessment
-          </p>
         </div>
       </div>
     </footer>

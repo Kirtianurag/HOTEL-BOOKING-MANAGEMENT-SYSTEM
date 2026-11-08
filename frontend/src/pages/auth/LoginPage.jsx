@@ -91,7 +91,7 @@ const LoginPage = () => {
       {/* ─────────────────────────────────────────────────────────────
           LEFT COLUMN: LUXURY HOTEL PHOTOGRAPH (Clean & Uncluttered)
       ───────────────────────────────────────────────────────────── */}
-      <div className="relative w-full lg:w-[52%] xl:w-[54%] min-h-[380px] sm:min-h-[460px] lg:min-h-screen overflow-hidden flex flex-col justify-end p-8 sm:p-12 lg:p-16 bg-slate-950 text-white shrink-0">
+      <div className="relative w-full lg:w-[52%] xl:w-[54%] min-h-[420px] sm:min-h-[500px] lg:min-h-screen overflow-hidden flex flex-col justify-end p-8 sm:p-12 lg:p-16 pb-16 sm:pb-20 lg:pb-24 bg-slate-950 text-white shrink-0">
         {/* Animated Background Hotel Image with Slow Ken Burns Movement */}
         <div className="absolute inset-0 z-0 overflow-hidden bg-slate-950">
           <img
@@ -107,8 +107,8 @@ const LoginPage = () => {
           <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/40 to-black/20" />
         </div>
 
-        {/* Narrative Typography - Clean, Professional & Balanced */}
-        <div className="relative z-10 max-w-lg mb-2">
+        {/* Narrative Typography - Lifted & Balanced */}
+        <div className="relative z-10 max-w-lg mb-6 sm:mb-10 lg:mb-12">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}

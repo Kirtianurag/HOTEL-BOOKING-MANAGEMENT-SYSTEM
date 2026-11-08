@@ -182,4 +182,3 @@ const BookingSearchBar = ({ initialValues = {}, onSearch, compact = false }) => 
 };
 
 export default BookingSearchBar;
-

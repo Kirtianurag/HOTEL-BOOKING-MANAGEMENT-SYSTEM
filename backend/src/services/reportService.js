@@ -25,20 +25,37 @@ export const getDashboardStats = async () => {
   const tomorrow = new Date(today);
   tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
 
-  // Room counts
-  const [totalRooms, availableRooms] = await Promise.all([
-    Room.countDocuments({ isActive: true }),
-    Room.countDocuments({ isActive: true, status: 'available' }),
-  ]);
+  // Total active rooms
+  const totalRooms = await Room.countDocuments({ isActive: true });
 
-  // Occupied rooms: rooms with a CHECKED_IN reservation that spans today
-  const occupiedReservations = await Reservation.find({
-    status: 'CHECKED_IN',
+  // Occupied rooms: rooms with an active stay today (CHECKED_IN or CONFIRMED spanning today)
+  // or explicitly flagged with status 'occupied'
+  const occupiedFromReservations = await Reservation.find({
+    status: { $in: ['CHECKED_IN', 'CONFIRMED'] },
     checkIn: { $lte: today },
     checkOut: { $gt: today },
   }).distinct('room');
 
-  const occupiedRooms = occupiedReservations.length;
+  const occupiedFromStatus = await Room.find({
+    isActive: true,
+    status: 'occupied',
+  }).distinct('_id');
+
+  const allOccupiedRoomIds = new Set([
+    ...occupiedFromReservations.map(id => id.toString()),
+    ...occupiedFromStatus.map(id => id.toString()),
+  ]);
+
+  const occupiedRooms = allOccupiedRoomIds.size;
+
+  // Out of order/service rooms
+  const oosRooms = await Room.countDocuments({
+    isActive: true,
+    status: { $in: ['cleaning', 'maintenance', 'inactive'] },
+  });
+
+  // Available rooms ready for booking
+  const availableRooms = Math.max(0, totalRooms - occupiedRooms - oosRooms);
 
   // Today's arrivals: CONFIRMED reservations with checkIn = today
   const todayArrivals = await Reservation.countDocuments({

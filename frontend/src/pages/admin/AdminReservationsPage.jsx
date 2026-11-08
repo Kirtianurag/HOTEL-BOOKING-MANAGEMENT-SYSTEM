@@ -80,6 +80,32 @@ const AdminReservationsPage = () => {
     }
   };
 
+  const handleCheckIn = async (resId) => {
+    try {
+      const res = await api.post(`/staff/${resId}/checkin`);
+      if (res.success) {
+        setMessage('Guest checked in successfully! Room marked as Occupied.');
+        fetchReservations();
+        setDetailsModalOpen(false);
+      }
+    } catch (err) {
+      setError(err.message || 'Failed to check in guest');
+    }
+  };
+
+  const handleCheckOut = async (resId) => {
+    try {
+      const res = await api.post(`/staff/${resId}/checkout`);
+      if (res.success) {
+        setMessage('Guest checked out successfully! Room marked for Cleaning.');
+        fetchReservations();
+        setDetailsModalOpen(false);
+      }
+    } catch (err) {
+      setError(err.message || 'Failed to check out guest');
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -186,15 +212,35 @@ const AdminReservationsPage = () => {
                         <Badge status={r.status} />
                       </td>
                       <td className="py-3.5 px-6 text-right">
-                        <button
-                          onClick={() => {
-                            setSelectedRes(r);
-                            setDetailsModalOpen(true);
-                          }}
-                          className="px-2.5 py-1 text-purple-700 hover:bg-purple-50 rounded-lg font-semibold text-xs transition-colors"
-                        >
-                          View Details
-                        </button>
+                        <div className="flex items-center justify-end gap-1.5">
+                          {r.status === 'CONFIRMED' && (
+                            <button
+                              onClick={() => handleCheckIn(r._id)}
+                              className="px-2 py-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg font-semibold text-[11px] transition-colors"
+                              title="Check In Guest (Mark Room Occupied)"
+                            >
+                              Check In
+                            </button>
+                          )}
+                          {r.status === 'CHECKED_IN' && (
+                            <button
+                              onClick={() => handleCheckOut(r._id)}
+                              className="px-2 py-1 bg-amber-50 text-amber-700 hover:bg-amber-100 rounded-lg font-semibold text-[11px] transition-colors"
+                              title="Check Out Guest (Mark for Cleaning)"
+                            >
+                              Check Out
+                            </button>
+                          )}
+                          <button
+                            onClick={() => {
+                              setSelectedRes(r);
+                              setDetailsModalOpen(true);
+                            }}
+                            className="px-2.5 py-1 text-purple-700 hover:bg-purple-50 rounded-lg font-semibold text-xs transition-colors"
+                          >
+                            View
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );
@@ -291,12 +337,32 @@ const AdminReservationsPage = () => {
               </div>
             )}
 
-            <div className="pt-4 flex gap-3">
+            <div className="pt-4 flex flex-col sm:flex-row gap-2.5">
+              {selectedRes.status === 'CONFIRMED' && (
+                <button
+                  type="button"
+                  onClick={() => handleCheckIn(selectedRes._id)}
+                  className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold text-xs transition-colors"
+                >
+                  Check In Guest (Mark Room Occupied)
+                </button>
+              )}
+
+              {selectedRes.status === 'CHECKED_IN' && (
+                <button
+                  type="button"
+                  onClick={() => handleCheckOut(selectedRes._id)}
+                  className="w-full py-2.5 px-4 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-semibold text-xs transition-colors"
+                >
+                  Check Out Guest (Mark for Cleaning)
+                </button>
+              )}
+
               {['HOLD', 'CONFIRMED'].includes(selectedRes.status) && (
                 <button
                   type="button"
                   onClick={() => handleCancelReservation(selectedRes._id)}
-                  className="w-full py-2.5 px-4 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-semibold text-xs"
+                  className="w-full py-2.5 px-4 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-semibold text-xs transition-colors"
                 >
                   Cancel Booking & Release Locks
                 </button>

@@ -13,5 +13,6 @@ export const config = {
   JWT_SECRET: process.env.JWT_SECRET || 'change-me-in-production',
   JWT_EXPIRE: process.env.JWT_EXPIRE || '7d',
   NODE_ENV: process.env.NODE_ENV || 'development',
+  FRONTEND_URL: process.env.FRONTEND_URL || 'http://localhost:5173',
   COOKIE_MAX_AGE: parseInt(process.env.COOKIE_MAX_AGE, 10) || 7 * 24 * 60 * 60 * 1000, // 7 days in ms
 };

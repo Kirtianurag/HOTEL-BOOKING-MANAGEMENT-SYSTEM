@@ -10,7 +10,7 @@ const asyncHandler = (fn) => (req, res, next) => Promise.resolve(fn(req, res, ne
  * @access  Public
  */
 export const searchAvailability = asyncHandler(async (req, res, next) => {
-  const { checkIn, checkOut, guests, roomType } = req.query;
+  const { checkIn, checkOut, guests, roomType, roomTypeId } = req.query;
 
   if (!checkIn || !checkOut) {
     throw new AppError('Please provide checkIn and checkOut dates', 400);
@@ -38,7 +38,7 @@ export const searchAvailability = asyncHandler(async (req, res, next) => {
     checkIn: checkInDate,
     checkOut: checkOutDate,
     guests: guests ? Number(guests) : undefined,
-    roomType,
+    roomTypeId: roomTypeId || roomType,
   });
 
   res.status(200).json({

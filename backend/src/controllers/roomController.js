@@ -26,9 +26,49 @@ export const getRooms = asyncHandler(async (req, res, next) => {
 
   const rooms = await Room.find(filter).populate('roomType');
 
+  // Find active reservations spanning today
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const activeReservations = await Reservation.find({
+    status: { $in: ['CHECKED_IN', 'CONFIRMED'] },
+    checkIn: { $lte: today },
+    checkOut: { $gt: today },
+  }).populate('guest', 'firstName lastName email phone');
+
+  const resByRoom = new Map();
+  for (const r of activeReservations) {
+    if (r.room) {
+      resByRoom.set(r.room.toString(), r);
+    }
+  }
+
+  const enrichedRooms = rooms.map((room) => {
+    const roomObj = room.toObject();
+    const activeRes = resByRoom.get(room._id.toString());
+    if (activeRes) {
+      roomObj.isOccupied = true;
+      roomObj.activeReservation = {
+        _id: activeRes._id,
+        bookingReference: activeRes.bookingReference,
+        status: activeRes.status,
+        guestName: `${activeRes.guestDetails?.firstName || activeRes.guest?.firstName || 'Guest'} ${activeRes.guestDetails?.lastName || activeRes.guest?.lastName || ''}`.trim(),
+        checkIn: activeRes.checkIn,
+        checkOut: activeRes.checkOut,
+      };
+      // If room status is still default 'available', dynamically show as occupied during active stay
+      if (roomObj.status === 'available') {
+        roomObj.status = 'occupied';
+      }
+    } else {
+      roomObj.isOccupied = roomObj.status === 'occupied';
+    }
+    return roomObj;
+  });
+
   res.status(200).json({
     success: true,
-    data: rooms,
+    data: enrichedRooms,
   });
 });
 

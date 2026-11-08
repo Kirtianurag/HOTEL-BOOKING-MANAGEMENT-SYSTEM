@@ -6,6 +6,7 @@ import {
   Calendar,
   User,
   LogOut,
+  LayoutDashboard,
   Shield,
   Briefcase,
   Menu,
@@ -51,47 +52,67 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-7">
             <Link
               to="/"
-              className={`text-sm font-medium transition-colors ${
-                isActive('/') ? 'text-purple-600 font-semibold' : 'text-slate-600 hover:text-purple-600'
+              className={`text-xs font-semibold tracking-wider uppercase transition-colors ${
+                isActive('/') ? 'text-purple-600 font-bold' : 'text-slate-600 hover:text-purple-600'
               }`}
             >
-              Home
+              HOME
             </Link>
             <Link
               to="/rooms"
-              className={`text-sm font-medium transition-colors ${
-                isActive('/rooms') ? 'text-purple-600 font-semibold' : 'text-slate-600 hover:text-purple-600'
+              className={`text-xs font-semibold tracking-wider uppercase transition-colors ${
+                isActive('/rooms') ? 'text-purple-600 font-bold' : 'text-slate-600 hover:text-purple-600'
               }`}
             >
-              Explore Rooms
+              EXPLORE ROOMS
             </Link>
-            {isAuthenticated && (
+            {isAuthenticated && !isAdmin && !isStaff && (
               <Link
                 to="/my-bookings"
-                className={`text-sm font-medium transition-colors ${
-                  isActive('/my-bookings') ? 'text-purple-600 font-semibold' : 'text-slate-600 hover:text-purple-600'
+                className={`text-xs font-semibold tracking-wider uppercase transition-colors ${
+                  isActive('/my-bookings') ? 'text-purple-600 font-bold' : 'text-slate-600 hover:text-purple-600'
                 }`}
               >
-                My Bookings
+                MY BOOKINGS
+              </Link>
+            )}
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className={`text-xs font-semibold tracking-wider uppercase transition-colors ${
+                  isActive('/admin') ? 'text-purple-600 font-bold' : 'text-slate-600 hover:text-purple-600'
+                }`}
+              >
+                ADMIN DASHBOARD
+              </Link>
+            )}
+            {isStaff && (
+              <Link
+                to="/staff"
+                className={`text-xs font-semibold tracking-wider uppercase transition-colors ${
+                  isActive('/staff') ? 'text-purple-600 font-bold' : 'text-slate-600 hover:text-purple-600'
+                }`}
+              >
+                STAFF DESK
               </Link>
             )}
             <a
               href="#about"
-              className="text-sm font-medium text-slate-600 hover:text-purple-600 transition-colors"
+              className="text-xs font-semibold tracking-wider uppercase text-slate-600 hover:text-purple-600 transition-colors"
             >
-              About
+              ABOUT
             </a>
             <a
               href="#amenities"
-              className="text-sm font-medium text-slate-600 hover:text-purple-600 transition-colors"
+              className="text-xs font-semibold tracking-wider uppercase text-slate-600 hover:text-purple-600 transition-colors"
             >
-              Amenities
+              AMENITIES
             </a>
             <a
               href="#contact"
-              className="text-sm font-medium text-slate-600 hover:text-purple-600 transition-colors"
+              className="text-xs font-semibold tracking-wider uppercase text-slate-600 hover:text-purple-600 transition-colors"
             >
-              Contact
+              CONTACT
             </a>
           </div>
 
@@ -129,7 +150,7 @@ const Navbar = () => {
                         onClick={() => setProfileDropdownOpen(false)}
                         className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-purple-50 hover:text-purple-700 transition-colors"
                       >
-                        <Shield className="w-4 h-4 text-purple-600" />
+                        <LayoutDashboard className="w-4 h-4 text-purple-600" />
                         Admin Dashboard
                       </Link>
                     )}
@@ -145,14 +166,16 @@ const Navbar = () => {
                       </Link>
                     )}
 
-                    <Link
-                      to="/my-bookings"
-                      onClick={() => setProfileDropdownOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-purple-50 hover:text-purple-700 transition-colors"
-                    >
-                      <Calendar className="w-4 h-4 text-slate-500" />
-                      My Bookings
-                    </Link>
+                    {!isAdmin && !isStaff && (
+                      <Link
+                        to="/my-bookings"
+                        onClick={() => setProfileDropdownOpen(false)}
+                        className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-purple-50 hover:text-purple-700 transition-colors"
+                      >
+                        <Calendar className="w-4 h-4 text-slate-500" />
+                        My Bookings
+                      </Link>
+                    )}
 
                     <Link
                       to="/profile"
@@ -211,33 +234,34 @@ const Navbar = () => {
           <Link
             to="/"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-lg text-base font-medium text-slate-800 hover:bg-purple-50 hover:text-purple-600"
+            className="block px-3 py-2 rounded-lg text-sm font-semibold tracking-wider uppercase text-slate-800 hover:bg-purple-50 hover:text-purple-600"
           >
-            Home
+            HOME
           </Link>
           <Link
             to="/rooms"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3 py-2 rounded-lg text-base font-medium text-slate-800 hover:bg-purple-50 hover:text-purple-600"
+            className="block px-3 py-2 rounded-lg text-sm font-semibold tracking-wider uppercase text-slate-800 hover:bg-purple-50 hover:text-purple-600"
           >
-            Explore Rooms
+            EXPLORE ROOMS
           </Link>
-          {isAuthenticated && (
+          {isAuthenticated && !isAdmin && !isStaff && (
             <Link
               to="/my-bookings"
               onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-lg text-base font-medium text-slate-800 hover:bg-purple-50 hover:text-purple-600"
+              className="block px-3 py-2 rounded-lg text-sm font-semibold tracking-wider uppercase text-slate-800 hover:bg-purple-50 hover:text-purple-600"
             >
-              My Bookings
+              MY BOOKINGS
             </Link>
           )}
           {isAdmin && (
             <Link
               to="/admin"
               onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-lg text-base font-medium text-purple-700 bg-purple-50"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg text-base font-medium text-purple-700 bg-purple-50"
             >
-              Admin Dashboard
+              <LayoutDashboard className="w-5 h-5 text-purple-600" />
+              <span>Admin Dashboard</span>
             </Link>
           )}
           {isStaff && (

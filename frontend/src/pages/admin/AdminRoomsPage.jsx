@@ -130,6 +130,7 @@ const AdminRoomsPage = () => {
           >
             <option value="">All Operational Statuses</option>
             <option value="available">Available</option>
+            <option value="occupied">Occupied</option>
             <option value="cleaning">Cleaning</option>
             <option value="maintenance">Maintenance</option>
             <option value="inactive">Inactive</option>
@@ -197,16 +198,32 @@ const AdminRoomsPage = () => {
                       ₹{r.roomType?.baseRate?.toFixed(2)}/nt
                     </td>
                     <td className="py-3.5 px-6">
-                      <select
-                        value={r.status}
-                        onChange={(e) => handleStatusChange(r._id, e.target.value)}
-                        className="bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-800 focus:outline-hidden cursor-pointer"
-                      >
-                        <option value="available">🟢 Available</option>
-                        <option value="cleaning">🟡 Cleaning</option>
-                        <option value="maintenance">🔴 Maintenance</option>
-                        <option value="inactive">⚪ Inactive</option>
-                      </select>
+                      <div className="flex flex-col gap-1">
+                        <select
+                          value={r.status}
+                          onChange={(e) => handleStatusChange(r._id, e.target.value)}
+                          className={`border rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-hidden cursor-pointer ${
+                            r.status === 'occupied'
+                              ? 'bg-purple-50 text-purple-700 border-purple-200'
+                              : 'bg-slate-50 text-slate-800 border-slate-200'
+                          }`}
+                        >
+                          <option value="available">🟢 Available</option>
+                          <option value="occupied">🟣 Occupied</option>
+                          <option value="cleaning">🟡 Cleaning</option>
+                          <option value="maintenance">🔴 Maintenance</option>
+                          <option value="inactive">⚪ Inactive</option>
+                        </select>
+                        {r.activeReservation && (
+                          <span
+                            className="text-[10px] text-purple-700 font-semibold truncate max-w-[150px] inline-flex items-center gap-1"
+                            title={`Booked by ${r.activeReservation.guestName} (${r.activeReservation.bookingReference})`}
+                          >
+                            <span>👤</span>
+                            <span>{r.activeReservation.guestName}</span>
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="py-3.5 px-6 text-right">
                       <button

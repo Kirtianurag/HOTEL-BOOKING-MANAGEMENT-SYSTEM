@@ -4,8 +4,8 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
-import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import { swaggerDocument } from './config/swaggerSpec.js';
 import { config } from './config/env.js';
 import { errorHandler, notFound } from './middleware/errorMiddleware.js';
 
@@ -29,17 +29,29 @@ app.use(helmet({
 }));
 
 // CORS configuration
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'http://127.0.0.1:5173',
+  config.FRONTEND_URL,
+].filter(Boolean);
+
 app.use(cors({
-  origin: config.NODE_ENV === 'production'
-    ? config.FRONTEND_URL
-    : ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173'],
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (config.NODE_ENV !== 'production') return callback(null, true);
+    if (allowedOrigins.some(o => origin.startsWith(o.replace(/\/$/, ''))) || origin.endsWith('.vercel.app')) {
+      return callback(null, true);
+    }
+    return callback(null, true);
+  },
   credentials: true
 }));
 
-// Rate limiting for auth routes
+// Rate limiting for auth routes (relaxed in development for seamless testing)
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 20,
+  max: config.NODE_ENV === 'development' ? 500 : 20,
   message: { success: false, message: 'Too many requests, please try again later.' },
   standardHeaders: true,
   legacyHeaders: false
@@ -48,7 +60,7 @@ const authLimiter = rateLimit({
 // General rate limiter
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 200,
+  max: config.NODE_ENV === 'development' ? 2000 : 200,
   standardHeaders: true,
   legacyHeaders: false
 });
@@ -66,43 +78,7 @@ if (config.NODE_ENV === 'development') {
 }
 
 // Swagger/OpenAPI documentation
-const swaggerOptions = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'StayEase Hotel Booking API',
-      version: '1.0.0',
-      description: 'REST API for StayEase Hotel Booking Management System',
-      contact: {
-        name: 'StayEase Support'
-      }
-    },
-    servers: [
-      {
-        url: `http://localhost:${config.PORT}/api`,
-        description: 'Development server'
-      }
-    ],
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT'
-        },
-        cookieAuth: {
-          type: 'apiKey',
-          in: 'cookie',
-          name: 'token'
-        }
-      }
-    }
-  },
-  apis: ['./src/routes/*.js']
-};
-
-const swaggerSpec = swaggerJsdoc(swaggerOptions);
-app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
   customCss: '.swagger-ui .topbar { display: none }',
   customSiteTitle: 'StayEase API Documentation'
 }));

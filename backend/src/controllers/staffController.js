@@ -1,4 +1,5 @@
 import Reservation from '../models/Reservation.js';
+import Room from '../models/Room.js';
 import RoomNightLock from '../models/RoomNightLock.js';
 import AuditLog from '../models/AuditLog.js';
 import AppError from '../middleware/errorMiddleware.js';
@@ -38,6 +39,11 @@ export const checkIn = asyncHandler(async (req, res, next) => {
   reservation.checkedInAt = new Date();
   await reservation.save();
 
+  // Mark assigned room as occupied
+  if (reservation.room) {
+    await Room.findByIdAndUpdate(reservation.room, { status: 'occupied' });
+  }
+
   await AuditLog.create({
     userId: req.user._id,
     action: 'RESERVATION_CHECK_IN',
@@ -74,6 +80,11 @@ export const checkOut = asyncHandler(async (req, res, next) => {
   reservation.status = 'CHECKED_OUT';
   reservation.checkedOutAt = new Date();
   await reservation.save();
+
+  // Mark room as cleaning after checkout
+  if (reservation.room) {
+    await Room.findByIdAndUpdate(reservation.room, { status: 'cleaning' });
+  }
 
   // Release room-night locks
   await RoomNightLock.deleteMany({ reservation: reservation._id });

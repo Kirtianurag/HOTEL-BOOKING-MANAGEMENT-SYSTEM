@@ -86,7 +86,7 @@ const roomTypesData = [
     maxOccupancy: 2,
     baseRate: 99.99,
     amenities: ['WiFi', 'TV', 'Air Conditioning', 'Coffee Maker', 'Safe', 'Hair Dryer'],
-    images: ['/images/rooms/standard-1.jpg', '/images/rooms/standard-2.jpg'],
+    images: ['https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=800&q=80'],
     isActive: true
   },
   {
@@ -95,7 +95,7 @@ const roomTypesData = [
     maxOccupancy: 3,
     baseRate: 179.99,
     amenities: ['WiFi', 'TV', 'Air Conditioning', 'Mini Bar', 'Coffee Maker', 'Safe', 'Hair Dryer', 'Bathrobe', 'City View'],
-    images: ['/images/rooms/deluxe-1.jpg', '/images/rooms/deluxe-2.jpg'],
+    images: ['https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=800&q=80'],
     isActive: true
   },
   {
@@ -104,7 +104,7 @@ const roomTypesData = [
     maxOccupancy: 4,
     baseRate: 349.99,
     amenities: ['WiFi', 'TV', 'Air Conditioning', 'Mini Bar', 'Coffee Maker', 'Safe', 'Hair Dryer', 'Bathrobe', 'Living Area', 'Jacuzzi', 'Panoramic View', 'Butler Service'],
-    images: ['/images/rooms/suite-1.jpg', '/images/rooms/suite-2.jpg'],
+    images: ['https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80'],
     isActive: true
   },
   {
@@ -113,7 +113,25 @@ const roomTypesData = [
     maxOccupancy: 6,
     baseRate: 249.99,
     amenities: ['WiFi', 'TV', 'Air Conditioning', 'Mini Bar', 'Coffee Maker', 'Safe', 'Hair Dryer', 'Extra Beds', 'Family Bathroom', 'Game Console'],
-    images: ['/images/rooms/family-1.jpg', '/images/rooms/family-2.jpg'],
+    images: ['https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=800&q=80'],
+    isActive: true
+  },
+  {
+    name: 'Executive Club',
+    description: 'Spacious business suite on high floors with dedicated ergonomic workstation, Nespresso bar, and club lounge access.',
+    maxOccupancy: 2,
+    baseRate: 219.99,
+    amenities: ['High-speed WiFi', '4K Smart TV', 'Ergonomic Desk', 'Nespresso Machine', 'Lounge Access', 'Safe', 'Luxury Bathrobe', 'Skyline View'],
+    images: ['https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=800&q=80'],
+    isActive: true
+  },
+  {
+    name: 'Presidential Villa',
+    description: 'Opulent top-tier residence featuring private plunge pool, master jacuzzi, 24/7 dedicated butler service, and panoramic ocean vistas.',
+    maxOccupancy: 6,
+    baseRate: 599.99,
+    amenities: ['Private Infinity Pool', 'Master Jacuzzi', 'Dedicated Butler', 'Wine Cellar', 'Walk-in Closet', 'Home Cinema', 'Terrace Deck', 'Airport Chauffeur'],
+    images: ['https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=800&q=80'],
     isActive: true
   }
 ];
@@ -129,10 +147,10 @@ async function seed() {
     await mongoose.connect(MONGODB_URI);
     console.log('✅ Connected to MongoDB\n');
 
-    // Clear existing data
+    // Clear existing data (preserves non-demo user accounts)
     console.log('🗑️  Clearing existing data...');
     await Promise.all([
-      User.deleteMany({}),
+      User.deleteMany({ email: { $in: usersData.map(u => u.email) } }),
       RoomType.deleteMany({}),
       Room.deleteMany({}),
       Reservation.deleteMany({}),
@@ -166,27 +184,46 @@ async function seed() {
     }
     console.log('');
 
-    const [standardType, deluxeType, suiteType, familyType] = roomTypes;
+    const [standardType, deluxeType, suiteType, familyType, execType, villaType] = roomTypes;
 
     // Create Rooms
     console.log('🚪 Creating rooms...');
     const roomsData = [
       // Standard rooms - Floor 1
-      { roomNumber: '101', roomType: standardType._id, floor: 1, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning'] },
-      { roomNumber: '102', roomType: standardType._id, floor: 1, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning'] },
+      { roomNumber: '101', roomType: standardType._id, floor: 1, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning', 'Coffee Maker'] },
+      { roomNumber: '102', roomType: standardType._id, floor: 1, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning', 'Safe'] },
       { roomNumber: '103', roomType: standardType._id, floor: 1, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning'] },
       { roomNumber: '104', roomType: standardType._id, floor: 1, status: 'cleaning', amenities: ['WiFi', 'TV', 'Air Conditioning'] },
+      { roomNumber: '105', roomType: standardType._id, floor: 1, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning', 'Garden View'] },
+
       // Deluxe rooms - Floor 2
       { roomNumber: '201', roomType: deluxeType._id, floor: 2, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning', 'Mini Bar', 'City View'] },
       { roomNumber: '202', roomType: deluxeType._id, floor: 2, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning', 'Mini Bar', 'City View'] },
-      { roomNumber: '203', roomType: deluxeType._id, floor: 2, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning', 'Mini Bar'] },
+      { roomNumber: '203', roomType: deluxeType._id, floor: 2, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning', 'Mini Bar', 'Bathrobe'] },
       { roomNumber: '204', roomType: deluxeType._id, floor: 2, status: 'maintenance', amenities: ['WiFi', 'TV', 'Air Conditioning', 'Mini Bar'] },
+      { roomNumber: '205', roomType: deluxeType._id, floor: 2, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning', 'Mini Bar', 'Balcony'] },
+      { roomNumber: '206', roomType: deluxeType._id, floor: 2, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning', 'Mini Bar', 'Espresso Bar'] },
+
       // Suite rooms - Floor 3
       { roomNumber: '301', roomType: suiteType._id, floor: 3, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning', 'Mini Bar', 'Jacuzzi', 'Panoramic View'] },
       { roomNumber: '302', roomType: suiteType._id, floor: 3, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning', 'Mini Bar', 'Jacuzzi'] },
+      { roomNumber: '303', roomType: suiteType._id, floor: 3, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning', 'Mini Bar', 'Living Area', 'Jacuzzi'] },
+      { roomNumber: '304', roomType: suiteType._id, floor: 3, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning', 'Butler Service', 'Panoramic View'] },
+
       // Family rooms - Floor 4
       { roomNumber: '401', roomType: familyType._id, floor: 4, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning', 'Extra Beds', 'Game Console'] },
-      { roomNumber: '402', roomType: familyType._id, floor: 4, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning', 'Extra Beds'] },
+      { roomNumber: '402', roomType: familyType._id, floor: 4, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning', 'Extra Beds', 'Family Bathroom'] },
+      { roomNumber: '403', roomType: familyType._id, floor: 4, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning', 'Extra Beds', 'Mini Bar'] },
+      { roomNumber: '404', roomType: familyType._id, floor: 4, status: 'available', amenities: ['WiFi', 'TV', 'Air Conditioning', 'Extra Beds', 'Kid Toys'] },
+
+      // Executive Club - Floor 5
+      { roomNumber: '501', roomType: execType._id, floor: 5, status: 'available', amenities: ['High-speed WiFi', '4K Smart TV', 'Ergonomic Desk', 'Lounge Access'] },
+      { roomNumber: '502', roomType: execType._id, floor: 5, status: 'available', amenities: ['High-speed WiFi', '4K Smart TV', 'Skyline View', 'Nespresso Machine'] },
+      { roomNumber: '503', roomType: execType._id, floor: 5, status: 'available', amenities: ['High-speed WiFi', '4K Smart TV', 'Club Lounge Access', 'Luxury Bathrobe'] },
+
+      // Presidential Villa - Floor 6 Penthouse
+      { roomNumber: '601', roomType: villaType._id, floor: 6, status: 'available', amenities: ['Private Infinity Pool', 'Master Jacuzzi', 'Dedicated Butler', 'Wine Cellar'] },
+      { roomNumber: '602', roomType: villaType._id, floor: 6, status: 'available', amenities: ['Private Plunge Pool', 'Master Jacuzzi', 'Airport Chauffeur', 'Terrace Deck'] },
     ];
 
     const rooms = [];

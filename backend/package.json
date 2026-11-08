@@ -8,6 +8,8 @@
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "seed": "node src/seeds/seed.js",
+    "seed:rooms": "node src/scripts/seedExtraRooms.js",
+    "users": "node src/scripts/listUsers.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --forceExit --detectOpenHandles"
   },
   "keywords": [

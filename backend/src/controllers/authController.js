@@ -51,9 +51,10 @@ const sendTokenResponse = (user, statusCode, res) => {
  */
 export const register = asyncHandler(async (req, res, next) => {
   const { firstName, lastName, email, password, phone } = req.body;
+  const normalizedEmail = (email || '').trim().toLowerCase();
 
   // Check if user already exists
-  const existingUser = await User.findOne({ email });
+  const existingUser = await User.findOne({ email: normalizedEmail });
   if (existingUser) {
     throw new AppError('A user with that email already exists', 400);
   }
@@ -62,7 +63,7 @@ export const register = asyncHandler(async (req, res, next) => {
   const user = await User.create({
     firstName,
     lastName,
-    email,
+    email: normalizedEmail,
     password,
     phone,
     role: 'guest',
@@ -92,8 +93,10 @@ export const login = asyncHandler(async (req, res, next) => {
     throw new AppError('Please provide an email and password', 400);
   }
 
+  const normalizedEmail = (email || '').trim().toLowerCase();
+
   // Find user and include password field for comparison
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email: normalizedEmail }).select('+password');
   if (!user) {
     throw new AppError('Invalid credentials', 401);
   }

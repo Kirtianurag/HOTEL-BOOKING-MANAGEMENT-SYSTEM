@@ -22,7 +22,7 @@ import { AppError } from '../middleware/errorMiddleware.js';
  * @param {import('mongoose').Types.ObjectId|string} [params.roomTypeId] Filter by room type.
  * @returns {Promise<Object[]>} Array of available rooms with pricing.
  */
-export const searchAvailableRooms = async ({ checkIn, checkOut, guests, roomTypeId }) => {
+export const searchAvailableRooms = async ({ checkIn, checkOut, guests, roomTypeId, roomType }) => {
   // Clean stale holds before any availability logic
   await cleanExpiredHolds();
 
@@ -44,8 +44,9 @@ export const searchAvailableRooms = async ({ checkIn, checkOut, guests, roomType
     isActive: true,
   };
 
-  if (roomTypeId) {
-    roomQuery.roomType = roomTypeId;
+  const targetRoomType = roomTypeId || roomType;
+  if (targetRoomType) {
+    roomQuery.roomType = targetRoomType;
   }
 
   // Fetch candidate rooms with their room type details
