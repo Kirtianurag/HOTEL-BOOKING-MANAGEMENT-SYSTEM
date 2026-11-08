@@ -7,7 +7,10 @@ import { config } from './env.js';
  */
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(config.MONGODB_URI);
+    const conn = await mongoose.connect(config.MONGODB_URI, {
+      family: 4, // Force IPv4 resolution (required for Node 20/22/24 on Render/cloud containers)
+      serverSelectionTimeoutMS: 15000,
+    });
 
     console.log(`✅ MongoDB connected: ${conn.connection.host}/${conn.connection.name}`);
   } catch (error) {
