@@ -24,17 +24,18 @@ export const getRooms = asyncHandler(async (req, res, next) => {
     filter.floor = Number(req.query.floor);
   }
 
-  const rooms = await Room.find(filter).populate('roomType');
-
-  // Find active reservations spanning today
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const activeReservations = await Reservation.find({
-    status: { $in: ['CHECKED_IN', 'CONFIRMED'] },
-    checkIn: { $lte: today },
-    checkOut: { $gt: today },
-  }).populate('guest', 'firstName lastName email phone');
+  // Fetch rooms and active reservations in parallel with .lean() for maximum speed
+  const [rooms, activeReservations] = await Promise.all([
+    Room.find(filter).populate('roomType').lean(),
+    Reservation.find({
+      status: { $in: ['CHECKED_IN', 'CONFIRMED'] },
+      checkIn: { $lte: today },
+      checkOut: { $gt: today },
+    }).populate('guest', 'firstName lastName email phone').lean(),
+  ]);
 
   const resByRoom = new Map();
   for (const r of activeReservations) {
@@ -43,9 +44,8 @@ export const getRooms = asyncHandler(async (req, res, next) => {
     }
   }
 
-  const enrichedRooms = rooms.map((room) => {
-    const roomObj = room.toObject();
-    const activeRes = resByRoom.get(room._id.toString());
+  const enrichedRooms = rooms.map((roomObj) => {
+    const activeRes = resByRoom.get(roomObj._id.toString());
     if (activeRes) {
       roomObj.isOccupied = true;
       roomObj.activeReservation = {

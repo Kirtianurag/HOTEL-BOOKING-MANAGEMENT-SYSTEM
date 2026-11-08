@@ -25,21 +25,56 @@ export const getDashboardStats = async () => {
   const tomorrow = new Date(today);
   tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
 
-  // Total active rooms
-  const totalRooms = await Room.countDocuments({ isActive: true });
-
-  // Occupied rooms: rooms with an active stay today (CHECKED_IN or CONFIRMED spanning today)
-  // or explicitly flagged with status 'occupied'
-  const occupiedFromReservations = await Reservation.find({
-    status: { $in: ['CHECKED_IN', 'CONFIRMED'] },
-    checkIn: { $lte: today },
-    checkOut: { $gt: today },
-  }).distinct('room');
-
-  const occupiedFromStatus = await Room.find({
-    isActive: true,
-    status: 'occupied',
-  }).distinct('_id');
+  // Run all independent aggregation & count queries in parallel
+  const [
+    totalRooms,
+    occupiedFromReservations,
+    occupiedFromStatus,
+    oosRooms,
+    todayArrivals,
+    todayDepartures,
+    totalReservations,
+    revenueAgg
+  ] = await Promise.all([
+    Room.countDocuments({ isActive: true }),
+    Reservation.find({
+      status: { $in: ['CHECKED_IN', 'CONFIRMED'] },
+      checkIn: { $lte: today },
+      checkOut: { $gt: today },
+    }).distinct('room'),
+    Room.find({
+      isActive: true,
+      status: 'occupied',
+    }).distinct('_id'),
+    Room.countDocuments({
+      isActive: true,
+      status: { $in: ['cleaning', 'maintenance', 'inactive'] },
+    }),
+    Reservation.countDocuments({
+      status: 'CONFIRMED',
+      checkIn: { $gte: today, $lt: tomorrow },
+    }),
+    Reservation.countDocuments({
+      status: 'CHECKED_IN',
+      checkOut: { $gte: today, $lt: tomorrow },
+    }),
+    Reservation.countDocuments({
+      status: { $ne: 'CANCELLED' },
+    }),
+    Reservation.aggregate([
+      {
+        $match: {
+          status: { $in: ['CONFIRMED', 'CHECKED_IN', 'CHECKED_OUT'] },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalRevenue: { $sum: { $ifNull: ['$pricing.totalAmount', '$totalAmount', 0] } },
+        },
+      },
+    ])
+  ]);
 
   const allOccupiedRoomIds = new Set([
     ...occupiedFromReservations.map(id => id.toString()),
@@ -47,48 +82,7 @@ export const getDashboardStats = async () => {
   ]);
 
   const occupiedRooms = allOccupiedRoomIds.size;
-
-  // Out of order/service rooms
-  const oosRooms = await Room.countDocuments({
-    isActive: true,
-    status: { $in: ['cleaning', 'maintenance', 'inactive'] },
-  });
-
-  // Available rooms ready for booking
   const availableRooms = Math.max(0, totalRooms - occupiedRooms - oosRooms);
-
-  // Today's arrivals: CONFIRMED reservations with checkIn = today
-  const todayArrivals = await Reservation.countDocuments({
-    status: 'CONFIRMED',
-    checkIn: { $gte: today, $lt: tomorrow },
-  });
-
-  // Today's departures: CHECKED_IN reservations with checkOut = today
-  const todayDepartures = await Reservation.countDocuments({
-    status: 'CHECKED_IN',
-    checkOut: { $gte: today, $lt: tomorrow },
-  });
-
-  // Total active reservations (non-cancelled)
-  const totalReservations = await Reservation.countDocuments({
-    status: { $ne: 'CANCELLED' },
-  });
-
-  // Total revenue (CONFIRMED + CHECKED_IN + CHECKED_OUT)
-  const revenueAgg = await Reservation.aggregate([
-    {
-      $match: {
-        status: { $in: ['CONFIRMED', 'CHECKED_IN', 'CHECKED_OUT'] },
-      },
-    },
-    {
-      $group: {
-        _id: null,
-        totalRevenue: { $sum: { $ifNull: ['$pricing.totalAmount', '$totalAmount', 0] } },
-      },
-    },
-  ]);
-
   const totalRevenue = revenueAgg.length > 0 ? (revenueAgg[0].totalRevenue || 0) : 0;
 
   return {
