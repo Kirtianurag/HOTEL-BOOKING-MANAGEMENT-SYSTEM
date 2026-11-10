@@ -249,7 +249,5 @@ Interactive Swagger/OpenAPI documentation is available when the backend server i
 
 ## 📄 Submission Documentation
 
-- **Technical Report:** [`docs/technical-report.md`](docs/technical-report.md)
-- **Demo Script (3-5 min Walkthrough):** [`docs/demo-script.md`](docs/demo-script.md)
-- **Implementation Plan:** `implementation-plan.md`
+- **Technical Report & Architecture:** [`docs/technical-report.md`](docs/technical-report.md)
 
